@@ -16,7 +16,7 @@ def create_task(request):
             status=False,
             user=request.user
         )
-        return redirect("task_list")
+        return redirect("tasks")
     return render(request, "create.html")
 
 @login_required
@@ -30,9 +30,11 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('task_list')
+            return redirect('tasks')
         else:
-            print(form.errors)
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, error)
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
@@ -46,7 +48,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect("task_list")
+            return redirect("tasks")
         else:
             messages.error(request, "Invalid username or password")
 
