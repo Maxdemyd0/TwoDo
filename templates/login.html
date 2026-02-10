@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="icon" href="{% static "style/favicon.ico" %}">
+    <link rel="stylesheet" href="{% static "style/styles.css" %}">
+</head>
+<body>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="error">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <label for="username">Username: </label>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Password: </label>
+        <input type="password" id="password" name="password" required><br>
+        <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="/register/">Register</a></p>
+</body>
+</html>

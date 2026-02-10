@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Tasks</title>
+</head>
+<body>
+    <p>
+        <a href="{% url 'create' %}">➕ Create Task</a> |
+        <a href="{% url 'logout' %}">Logout</a>
+    </p>
+    <table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Completed</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.name }}</td>
+                <td>{{ task.description }}</td>
+                <td style="text-align: center;">
+                    <input type="checkbox"
+                           {% if task.status %}checked{% endif %}
+                           disabled>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3" style="text-align: center;">
+                    No tasks yet 🎉
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
