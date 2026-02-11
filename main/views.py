@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from main.models import Task
 from django.contrib.auth.forms import UserCreationForm
 
@@ -21,8 +21,53 @@ def create_task(request):
 
 @login_required
 def task_list(request):
+    filter_status = request.GET.get("filter")
+
     tasks = request.user.tasks.all()
-    return render(request, "tasks.html", {"tasks": tasks})
+
+    if filter_status == "active":
+        tasks = tasks.filter(status=False)
+    elif filter_status == "completed":
+        tasks = tasks.filter(status=True)
+
+    tasks = tasks.order_by("status", "-id")
+
+    return render(request, "tasks.html", {
+        "tasks": tasks,
+        "current_filter": filter_status
+    })
+
+@login_required
+def edit(request, task_id):
+    task = get_object_or_404(Task, id=task_id, user=request.user)
+
+    if request.method == "POST":
+        task.name = request.POST["name"]
+        task.description = request.POST.get("description", "")
+        task.save()
+        return redirect("tasks")
+
+    return render(request, "edit.html", {"task": task})
+
+@login_required
+def delete(request, task_id):
+    task = get_object_or_404(Task, id=task_id, user=request.user)
+
+    if request.method == "POST":
+        task.delete()
+        return redirect("tasks")
+
+    return redirect("tasks")
+
+@login_required
+def toggle_status(request, task_id):
+    task = get_object_or_404(Task, id=task_id, user=request.user)
+
+    if request.method == "POST":
+        task.status = "status" in request.POST
+        task.save()
+
+    return redirect("tasks")
 
 def register(request):
     if request.method == 'POST':

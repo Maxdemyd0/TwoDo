@@ -3,27 +3,68 @@
 {% block title %}Your Tasks{% endblock %}
 
 {% block content %}
-<h1>Your Tasks</h1>
-    
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Status</th>
-    </tr>
+    <h1>Your Tasks</h1>
 
-    {% for task in tasks %}
-    <tr>
-        <td>{{ task.name }}</td>
-        <td>{{ task.description }}</td>
-        <td>
-            <input type="checkbox" {% if task.status %}checked{% endif %} disabled>
-        </td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="3">No tasks yet 🎉</td>
-    </tr>
-    {% endfor %}
-</table>
+    <table>
+        <p>
+            <a href="{% url 'create' %}">
+                <button class="smallbutton">Create New Task</button>
+            </a>
+        </p>
+        <form method="get">
+            <label for="filter">Filter:</label>
+            <select name="filter" id="filter" onchange="this.form.submit()">
+                <option value="" {% if not current_filter %}selected{% endif %}>
+                    All
+                </option>
+                <option value="active" {% if current_filter == "active" %}selected{% endif %}>
+                    Active
+                </option>
+                <option value="completed" {% if current_filter == "completed" %}selected{% endif %}>
+                    Completed
+                </option>
+            </select>
+        </form>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for task in tasks %}
+        <tr class="{% if task.status %}completed{% endif %}">
+            <td>{{ task.name }}</td>
+            <td>{{ task.description }}</td>
+            <td>
+                <form action="{% url 'toggle_status' task.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="checkbox"
+                           name="status"
+                           onchange="this.form.submit()"
+                           {% if task.status %}checked{% endif %}>
+                </form>
+            </td>
+            <td>
+                <a href="{% url 'edit' task.id %}">
+                    <button class="smallbutton">Edit</button>
+                </a>
+
+                <form action="{% url 'delete' task.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('Delete this task?');" class="smallbutton">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4">No tasks yet 🎉</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <p>
+        <a href="{% url 'home' %}">
+            <button class="smallbutton">Return to the Home Page</button>
+        </a>
+    </p>
 {% endblock %}

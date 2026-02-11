@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <title>{% block title %}TwoDo{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'style/styles.css' %}">
+    <link rel="icon" href="{% static "style/favicon.ico" %}">
 </head>
 <body>
-<h1 style="color: #000000;">BASE TEMPLATE TEST</h1>
 {% if messages %}
     {% for message in messages %}
         <p class="{{ message.tags }}">{{ message }}</p>

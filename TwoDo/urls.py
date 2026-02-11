@@ -23,8 +23,10 @@ urlpatterns = [
     path('create/', views.create_task, name='create'),
     path('tasks/', views.task_list, name='tasks'),
     path('', views.home, name='home'),
-
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register, name='register'),
+    path('tasks/<int:task_id>/edit/', views.edit, name='edit'),
+    path('tasks/<int:task_id>/delete/', views.delete, name='delete'),
+    path('tasks/<int:task_id>/toggle/', views.toggle_status, name='toggle_status'),
 ]
