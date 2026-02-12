@@ -44,7 +44,7 @@ button {
     margin-bottom: 5px;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="email"] {
     background:
 
         linear-gradient(#eaeaea, #eaeaea) padding-box,
@@ -243,11 +243,30 @@ select {
     right: 8px;
     top: 52%;
     transform: translateY(-50%) rotate(0deg);
-    transition: transform 0.25s ease, color 0.25s ease;
+    transition: transform 0.1s ease, color 0.1s ease;
     pointer-events: none;
 }
 
 .select-wrapper.open::after {
     transform: translateY(-50%) rotate(-90deg);
     color: #0cc1e0;
+}
+
+
+.dropdown-row {
+    display: flex;
+    gap: 10px; /* space between dropdowns */
+    align-items: flex-end; /* align labels with dropdowns nicely */
+    margin-bottom: 20px; /* spacing below the row */
+}
+
+.dropdown-row .dropdown-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-form {
+    display: flex;
+    align-items: center; /* centers label vertically with select */
+    gap: 10px;           /* space between label and select */
 }

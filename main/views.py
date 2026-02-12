@@ -29,25 +29,34 @@ def create_task(request):
 
     return render(request, "create.html", {"form": form})
 
+
 @login_required
 def tasks(request):
     user_lists = request.user.lists.all()
-    selected_list_id = request.GET.get("list")
 
+    # Get selected list and filter from GET params
+    selected_list_id = request.GET.get("list", "")
+    current_filter = request.GET.get("filter", "")
+
+    tasks_qs = Task.objects.filter(user=request.user)
+
+    # Filter by list
     if selected_list_id and request.user.lists.filter(id=selected_list_id).exists():
-        tasks = Task.objects.filter(
-            user=request.user,
-            task_list_id=selected_list_id
-        )
-    else:
-        tasks = Task.objects.filter(user=request.user)
+        tasks_qs = tasks_qs.filter(task_list_id=selected_list_id)
 
-    tasks = tasks.order_by("status")
+    # Filter by status
+    if current_filter == "active":
+        tasks_qs = tasks_qs.filter(status=False)
+    elif current_filter == "completed":
+        tasks_qs = tasks_qs.filter(status=True)
+
+    tasks_qs = tasks_qs.order_by("status")
 
     context = {
-        "tasks": tasks,
+        "tasks": tasks_qs,
         "lists": user_lists,
         "selected_list_id": selected_list_id,
+        "current_filter": current_filter,  # <-- send to template
     }
 
     return render(request, "tasks.html", context)

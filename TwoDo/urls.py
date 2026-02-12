@@ -62,5 +62,5 @@ urlpatterns = [
     path('profile/<int:user_id>/', views.profile_detail, name='profile_detail'),
     path('lists/', views.lists, name='lists'),
     path('lists/create/', views.create_list, name='create_list'),
-    path('lists/<int:list_id>/', views.list_detail, name='list_detail'),
+    path('tasks/list/<int:list_id>/', views.list_detail, name='list_detail'),
 ]

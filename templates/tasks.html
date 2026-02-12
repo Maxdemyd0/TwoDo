@@ -9,9 +9,12 @@
         <p>
             <a href="{% url 'create' %}">
                 <button class="smallbutton">Create New Task</button>
+            </a><br>
+            <a href="{% url 'lists' %}">
+                <button class="smallbutton">View Task Lists</button>
             </a>
         </p>
-
+        <div class="dropdown-row">
             <form method="get">
                 <label for="filter">Filter:</label>
                 <div class="select-wrapper">
@@ -32,20 +35,23 @@
                 <label for="list">Filter by List:</label>
                 <div class="select-wrapper">
                     <select name="list" id="list" onchange="this.form.submit()">
-                        <option value="">All Lists</option>
-
+                        <option value="" {% if not current_list and not selected_list_id %}selected{% endif %}>
+                            All Lists
+                        </option>
                         {% for list in lists %}
                             <option value="{{ list.id }}"
-                                {% if list.id|stringformat:"s" == selected_list_id %}
+                                {% if current_list and list.id == current_list.id %}
                                     selected
-                                {% endif %}
-                            >
+                                {% elif list.id|stringformat:"s" == selected_list_id %}
+                                    selected
+                                {% endif %}>
                                 {{ list.name }}
                             </option>
                         {% endfor %}
                     </select>
                 </div>
-            </form><br
+            </form><br>
+        </div>
         <tr>
             <th>Name</th>
             <th>Description</th>
