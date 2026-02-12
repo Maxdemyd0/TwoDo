@@ -186,5 +186,5 @@ def list_detail(request, list_id):
 
     return render(request, "tasks.html", {
         "tasks": tasks,
-        "current_list": task_list
+        "current_filter": task_list
     })

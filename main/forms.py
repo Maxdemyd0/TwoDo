@@ -21,6 +21,5 @@ class TaskForm(forms.ModelForm):
         user = kwargs.pop("user", None)
         super().__init__(*args, **kwargs)
 
-        # Only show lists owned by this user
         if user:
             self.fields["task_list"].queryset = TaskList.objects.filter(user=user)

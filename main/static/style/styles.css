@@ -44,7 +44,7 @@ button {
     margin-bottom: 5px;
 }
 
-input[type="text"], input[type="password"], input[type="email"] {
+input[type="text"], input[type="password"], input[type="email"], input[type="e"] {
     background:
 
         linear-gradient(#eaeaea, #eaeaea) padding-box,
@@ -269,4 +269,12 @@ select {
     display: flex;
     align-items: center; /* centers label vertically with select */
     gap: 10px;           /* space between label and select */
+}
+
+textarea {
+    background: #eaeaea;
+    border: 4px solid transparent;
+    border-image: linear-gradient(to right, #0cc1e0, #ff7474) 1;
+    -webkit-appearance: none;
+    border-radius: 15px !important;
 }

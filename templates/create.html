@@ -6,13 +6,13 @@
     <form method="post">
         {% csrf_token %}
         <label>Name</label>
-        {{ form.name }}
+        {{ form.name }}<br>
 
         <label>Description</label>
-        {{ form.description }}
+        {{ form.description }}<br>
 
         <label>List</label>
-        {{ form.task_list }}
+        {{ form.task_list }}<br>
 
         <button type="submit">Create</button>
     </form>
