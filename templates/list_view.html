@@ -1,0 +1,67 @@
+{% extends "base_view.html" %}
+
+{% block title %}{{ task_list.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ task_list.name }}</h1>
+
+<p>
+    <a href="{% url 'create' %}?list={{ task_list.id }}">
+        <button class="smallbutton">Create Task in This List</button>
+    </a>
+</p>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for task in tasks %}
+    <tr class="{% if task.status %}completed{% endif %}">
+        <td>{{ task.name }}</td>
+        <td>{{ task.description }}</td>
+        <td>
+            <form action="{% url 'toggle_status' task.id %}" method="post">
+                {% csrf_token %}
+                <input type="checkbox"
+                       name="status"
+                       onchange="this.form.submit()"
+                       {% if task.status %}checked{% endif %}>
+            </form>
+        </td>
+        <td>
+            <a href="{% url 'edit' task.id %}">
+                <button class="smallbutton">Edit</button>
+            </a>
+
+            <form action="{% url 'delete' task.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit"
+                        onclick="return confirm('Delete this task?');"
+                        class="smallbutton">
+                    Delete
+                </button>
+            </form>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="4">No tasks in this list yet 🎉</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p>
+    <a href="{% url 'lists' %}">
+        <button class="smallbutton">Back to Lists</button>
+    </a>
+
+    <a href="{% url 'tasks' %}">
+        <button class="smallbutton">All Tasks</button>
+    </a>
+</p>
+
+{% endblock %}

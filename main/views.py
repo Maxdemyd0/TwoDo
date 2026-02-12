@@ -10,21 +10,24 @@ from main.models import Task, TaskList
 
 @login_required
 def create_task(request):
+    selected_list_id = request.GET.get("list")
+
     if request.method == "POST":
         form = TaskForm(request.POST, user=request.user)
-
         if form.is_valid():
             task = form.save(commit=False)
             task.user = request.user
             task.save()
             return redirect("tasks")
-
     else:
-        default_list = request.user.lists.first()
+        initial_data = {}
+
+        if selected_list_id:
+            initial_data["task_list"] = selected_list_id
 
         form = TaskForm(
             user=request.user,
-            initial={"task_list": default_list}
+            initial=initial_data
         )
 
     return render(request, "create.html", {"form": form})
@@ -32,34 +35,18 @@ def create_task(request):
 
 @login_required
 def tasks(request):
-    user_lists = request.user.lists.all()
-
-    # Get selected list and filter from GET params
-    selected_list_id = request.GET.get("list", "")
     current_filter = request.GET.get("filter", "")
+    tasks = Task.objects.filter(user=request.user)
 
-    tasks_qs = Task.objects.filter(user=request.user)
-
-    # Filter by list
-    if selected_list_id and request.user.lists.filter(id=selected_list_id).exists():
-        tasks_qs = tasks_qs.filter(task_list_id=selected_list_id)
-
-    # Filter by status
     if current_filter == "active":
-        tasks_qs = tasks_qs.filter(status=False)
+        tasks = tasks.filter(status=False)
     elif current_filter == "completed":
-        tasks_qs = tasks_qs.filter(status=True)
+        tasks = tasks.filter(status=True)
 
-    tasks_qs = tasks_qs.order_by("status")
-
-    context = {
-        "tasks": tasks_qs,
-        "lists": user_lists,
-        "selected_list_id": selected_list_id,
-        "current_filter": current_filter,  # <-- send to template
-    }
-
-    return render(request, "tasks.html", context)
+    return render(request, "tasks.html", {
+        "tasks": tasks,
+        "current_filter": current_filter,
+    })
 
 
 @login_required
@@ -184,7 +171,7 @@ def list_detail(request, list_id):
     task_list = get_object_or_404(TaskList, id=list_id, user=request.user)
     tasks = task_list.tasks.all()
 
-    return render(request, "tasks.html", {
+    return render(request, "list_view.html", {
+        "task_list": task_list,
         "tasks": tasks,
-        "current_filter": task_list
     })

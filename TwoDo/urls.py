@@ -21,15 +21,15 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('create/', views.create_task, name='create'),
-    path('tasks/', views.tasks, name='tasks'),
     path('', views.home, name='home'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('register/', views.register, name='register'),
+    path('tasks/', views.tasks, name='tasks'),
+    path('tasks/create/', views.create_task, name='create'),
     path('tasks/<int:task_id>/edit/', views.edit, name='edit'),
     path('tasks/<int:task_id>/delete/', views.delete, name='delete'),
     path('tasks/<int:task_id>/toggle/', views.toggle_status, name='toggle_status'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('register/', views.register, name='register'),
     path(
 "password-reset/",
         auth_views.PasswordResetView.as_view(
@@ -62,5 +62,5 @@ urlpatterns = [
     path('profile/<int:user_id>/', views.profile_detail, name='profile_detail'),
     path('lists/', views.lists, name='lists'),
     path('lists/create/', views.create_list, name='create_list'),
-    path('tasks/list/<int:list_id>/', views.list_detail, name='list_detail'),
+    path('lists/<int:list_id>/', views.list_detail, name='list_detail'),
 ]
