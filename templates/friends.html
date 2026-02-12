@@ -1,0 +1,78 @@
+{% extends "base_view.html" %}
+
+{% block title %}Friends{% endblock %}
+
+{% block content %}
+
+<h1>Friends</h1>
+
+<div class="tabs">
+    <a href="?tab=friends"
+       class="{% if tab == 'friends' %}active-tab{% endif %}">
+        Friends
+    </a>
+
+    <a href="?tab=search"
+       class="{% if tab == 'search' %}active-tab{% endif %}">
+        Search Users
+    </a>
+
+    <a href="?tab=requests"
+       class="{% if tab == 'requests' %}active-tab{% endif %}">
+        Requests
+    </a>
+</div>
+
+<hr>
+
+{% if tab == "friends" %}
+
+    {% for friend in friends %}
+        <div class="profile-box">
+            {{ friend.username }}
+        </div>
+    {% empty %}
+        <p>No friends yet.</p>
+    {% endfor %}
+
+{% elif tab == "search" %}
+
+    <form method="get">
+        <input type="hidden" name="tab" value="search">
+        <input type="text" name="q" placeholder="Search username...">
+        <button type="submit" class="smallbutton">Search</button>
+    </form>
+
+    <br>
+
+    {% for user in users %}
+        <div class="profile-box">
+            {{ user.username }}
+
+            <form action="{% url 'send_friend_request' user.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Add Friend</button>
+            </form>
+        </div>
+    {% empty %}
+        <p>No users found.</p>
+    {% endfor %}
+
+{% elif tab == "requests" %}
+
+    {% for req in requests %}
+        <div class="profile-box">
+            {{ req.sender.username }}
+
+            <form action="{% url 'accept_friend_request' req.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Accept</button>
+            </form>
+        </div>
+    {% empty %}
+        <p>No friend requests.</p>
+    {% endfor %}
+
+{% endif %}
+
+{% endblock %}

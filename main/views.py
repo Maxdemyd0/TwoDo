@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from django.http import HttpRequest
 from django.shortcuts import redirect, render, get_object_or_404
 from main.forms import RegisterForm, TaskForm, EditProfileForm
-from main.models import Task, TaskList
+from main.models import Task, TaskList, FriendRequest
+from typing import Any
 
 
 @login_required
@@ -125,15 +126,10 @@ def home(request: HttpRequest):
     return render(request, "home.html")
 
 @login_required
-def profile(request):
-    return profile_detail(request, request.user.id)
-
-@login_required
-def profile_detail(request, user_id):
-    user_obj = get_object_or_404(User, id=user_id)
+def profile(request, username):
+    user_obj = get_object_or_404(User, username=username)
 
     tasks = Task.objects.filter(user=user_obj)
-
     total_tasks = tasks.count()
     completed_tasks = tasks.filter(status=True).count()
     incomplete_tasks = tasks.filter(status=False).count()
@@ -213,3 +209,59 @@ def change_password(request):
     return render(request, "change_password.html", {
         "form": form
     })
+
+
+@login_required
+def friends_page(request):
+    tab = request.GET.get("tab", "friends")
+
+    context: dict[str, Any] = {"tab": tab}
+
+    # FRIENDS TAB
+    if tab == "friends":
+        friends = FriendRequest.get_friends(request.user)
+        context["friends"] = friends
+
+    # SEARCH TAB
+    elif tab == "search":
+        query = request.GET.get("q")
+        users = []
+
+        if query:
+            users = User.objects.filter(
+                username__icontains=query
+            ).exclude(id=request.user.id)
+
+        context["users"] = users
+
+    # REQUESTS TAB
+    elif tab == "requests":
+        requests = FriendRequest.objects.filter(
+            receiver=request.user,
+            accepted=False
+        )
+        context["requests"] = requests
+
+    return render(request, "friends.html", context)
+
+@login_required
+def send_friend_request(request, user_id):
+    receiver = User.objects.get(id=user_id)
+
+    if receiver != request.user:
+        FriendRequest.objects.get_or_create(
+            sender=request.user,
+            receiver=receiver
+        )
+
+    return redirect("search_users")
+
+@login_required
+def accept_friend_request(request, request_id):
+    friend_request = FriendRequest.objects.get(id=request_id)
+
+    if friend_request.receiver == request.user:
+        friend_request.accepted = True
+        friend_request.save()
+
+    return redirect("profile", username=request.user.username)

@@ -44,6 +44,10 @@ button {
     margin-bottom: 5px;
 }
 
+button:hover {
+    border: 3px solid #333333;
+}
+
 input[type="text"], input[type="password"], input[type="email"] {
     font: 16px "Segoe UI", segoe;
     background:
@@ -174,6 +178,10 @@ p a {
     margin-right: 10px;
 }
 
+.bigbutton:hover {
+    border: 4px solid #333333;
+}
+
 .completed td {
     text-decoration: line-through;
     opacity: 0.6;
@@ -265,7 +273,7 @@ select {
 
 .select-wrapper.open::after {
     transform: translateY(-50%) rotate(-90deg);
-    color: #0cc1e0;
+    color: #727272;
 }
 
 
@@ -312,10 +320,97 @@ textarea {
 }
 
 .profile-box a {
+    font: 20px "Segoe UI", segoe;
+    font-weight: normal;
+    margin-top: 0;
     color: #0c8fe0;
     text-decoration: underline;
 }
 
 .profile-box a:hover {
     text-decoration: underline;
+}
+
+.tabs {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.tabs a {
+    font: 15px "Segoe UI", segoe;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 3px solid #333333;
+    border-radius: 3px;
+    color: black;
+    background: #eaeaea;
+}
+
+.tabs a.active-tab {
+    background: linear-gradient(to right, #0cc1e0, #ff7474);
+    font-weight: bold;
+    color: #000000;
+}
+
+hr {
+    height: 4px;
+    background: linear-gradient(to right, #0cc1e0, #ff7474);
+    border: 0;
+    border-radius: 2px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between; /* pushes left & right apart */
+    align-items: center;
+    padding: 10px 0;
+}
+
+.nav-left,
+.nav-right {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.navbar a {
+    font: 20px "Segoe UI", segoe;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 2px 20px;
+    border: 3px solid #333333;
+    border-radius: 6px;
+    background: #eaeaea;
+    color: black;
+}
+
+.navbar a:hover {
+    background: linear-gradient(to right, #0cc1e0, #ff7474);
+    color: black;
+}
+
+.navbar .logout {
+    text-align: right;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.profile-icon img {
+    width: 27px;
+    height: 27px;
+    object-fit: contain;
+}
+
+.profile-icon {
+    background: none;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.profile-icon:hover {
+    background: linear-gradient(to right, #0cc1e0, #ff7474);
+    color: black;
 }

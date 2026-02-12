@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import path
 from main import views
 from django.contrib.auth import views as auth_views
@@ -58,11 +59,14 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
-    path('profile/', views.profile, name='profile'),
-    path('profile/<int:user_id>/', views.profile_detail, name='profile_detail'),
+    path('profile/<str:username>/', views.profile, name='profile'),
+    path("profile/", lambda request: redirect('profile', username=request.user.username), name="my_profile"),
     path("profile/edit/", views.edit_profile, name="edit_profile"),
     path("profile/edit/change-password/", views.change_password, name="change_password"),
     path('lists/', views.lists, name='lists'),
     path('lists/create/', views.create_list, name='create_list'),
     path('lists/<int:list_id>/', views.list_detail, name='list_detail'),
+    path("friends/", views.friends_page, name="friends_page"),
+    path("friends/send/<int:user_id>/", views.send_friend_request, name="send_friend_request"),
+    path("friends/accept/<int:request_id>/", views.accept_friend_request, name="accept_friend_request"),
 ]
