@@ -1,21 +1,22 @@
 {% extends "base_view.html" %}
 
-{% block title %}Edit Task{% endblock %}
-
 {% block content %}
-<h1>Edit Task</h1>
+    <h1>Edit Task</h1>
 
-<form method="post">
-    {% csrf_token %}
+    <form method="post">
+        {% csrf_token %}
+        <label>Name</label>
+        {{ form.name }}
 
-    <label for="name">Task Name</label><br>
-    <input type="text" name="name" id="name" value="{{ task.name }}" required><br><br>
+        <label>Description</label>
+        {{ form.description }}
 
-    <label for="description">Description</label><br>
-    <input type="text" name="description" id="description" value="{{ task.description }}"><br><br>
+        <label>Completed</label>
+        {{ form.status }}
 
-    <button type="submit">Save</button>
-</form>
+        <label>List</label>
+        {{ form.task_list }}
 
-<p><a href="{% url 'tasks' %}">Cancel</a></p>
+        <button type="submit">Save Changes</button>
+    </form>
 {% endblock %}

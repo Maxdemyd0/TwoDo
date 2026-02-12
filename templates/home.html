@@ -1,13 +1,8 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>TwoDo – Online Task Management</title>
-    <link rel="icon" href="{% static "style/favicon.ico" %}">
-    <link rel="stylesheet" href="{% static "style/styles.css" %}">
-</head>
-<body>
+{% extends "base_view.html" %}
+
+{% block title %}TwoDo - Online Task Management{% endblock %}
+
+{% block content %}
     <h1>TwoDo</h1>
     <h3>The best way to complete tasks is finally here!</h3>
     <p>
@@ -23,5 +18,4 @@
         TwoDo allows you to share your tasks with your team members for more effective teamwork.
         You also gain access to completely free and useful features by using our product!
     </h3>
-</body>
-</html>
+{% endblock %}

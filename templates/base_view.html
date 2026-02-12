@@ -7,6 +7,18 @@
     <link rel="stylesheet" href="{% static 'style/styles.css' %}">
     <link rel="icon" href="{% static "style/favicon.ico" %}">
 </head>
+<script>
+const select = document.getElementById("taskFilter");
+const wrapper = select.parentElement;
+
+select.addEventListener("click", () => {
+    wrapper.classList.toggle("open");
+});
+
+select.addEventListener("blur", () => {
+    wrapper.classList.remove("open");
+});
+</script>
 <body>
 {% if messages %}
     {% for message in messages %}
@@ -15,6 +27,8 @@
 {% endif %}
 
 {% block content %}{% endblock %}
+
+<script src="{% static 'scripts/main.js' %}"></script>
 
 </body>
 </html>

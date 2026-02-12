@@ -49,6 +49,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    "main.auth_backends.UsernameOrEmailBackend",
+]
+
 ROOT_URLCONF = 'TwoDo.urls'
 
 TEMPLATES = [
@@ -68,6 +72,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'TwoDo.wsgi.application'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 # Database

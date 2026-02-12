@@ -1,0 +1,48 @@
+{% extends "base_view.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h1>
+    {% if is_self %}
+        Your Profile
+    {% else %}
+        {{ user_obj.username }}'s Profile
+    {% endif %}
+</h1>
+
+<div class="profile-box">
+    <p><strong>Username:</strong> {{ user_obj.username }}</p>
+    <p><strong>Email:</strong>
+        {% if is_self %}
+            {{ user_obj.email }}
+        {% else %}
+            Private
+        {% endif %}
+    </p>
+    <p><strong>Date Joined:</strong> {{ user_obj.date_joined|date:"F j, Y" }}</p>
+</div>
+
+<h2>Task Statistics</h2>
+
+<table>
+    <tr>
+        <th>Total Tasks</th>
+        <th>Completed</th>
+        <th>Incomplete</th>
+    </tr>
+    <tr>
+        <td>{{ total_tasks }}</td>
+        <td>{{ completed_tasks }}</td>
+        <td>{{ incomplete_tasks }}</td>
+    </tr>
+</table>
+
+{% if is_self %}
+    <br>
+    <a href="#">
+        <button>Edit Profile</button>
+    </a>
+{% endif %}
+
+{% endblock %}

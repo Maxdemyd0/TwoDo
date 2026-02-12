@@ -25,7 +25,7 @@ h2 {
 h3 {
     font: 28px "Segoe UI", segoe;
     color: #000000;
-    margin-top: 1px;
+    margin-top: 0;
 }
 
 button {
@@ -105,7 +105,7 @@ td:nth-child(2) {
 
 th:nth-child(3),
 td:nth-child(3) {
-    width: 70px;
+    width: 60px;
     text-align: center;
     overflow: visible;
 }
@@ -178,16 +178,7 @@ p a {
     opacity: 0.6;
 }
 
-select {
-    background:
-        linear-gradient(#d8d8d8, #d8d8d8) padding-box,
-        linear-gradient(to right, #0cc1e0, #ff7474) border-box;
 
-    border-radius: 3px;
-    border: 3px solid transparent;
-    padding: 0;
-    font: 16px "Segoe UI", segoe;
-}
 
 form {
     margin-bottom: 15px;
@@ -195,4 +186,68 @@ form {
 
 .home {
     background: linear-gradient(to right, #0cc1e0, #ff7474);
+}
+
+.profile-box {
+    border: 2px solid #ccc;
+    padding: 15px;
+    width: 400px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    display: inline-block;
+
+    font: 16px "Segoe UI", segoe;
+    padding: 6px 40px 6px 10px;
+    cursor: pointer;
+
+    border-radius: 3px;
+    border: 3px solid transparent;
+
+    background-image: linear-gradient(#d8d8d8, #d8d8d8),
+    linear-gradient(to right, #0cc1e0, #ff7474),
+    linear-gradient(45deg, transparent 50%, #333 50%),
+    linear-gradient(135deg, #333 50%, transparent 50%);
+
+    background-origin: padding-box, border-box, border-box, border-box;
+    background-clip: padding-box, border-box, border-box, border-box;
+
+    background-repeat: no-repeat;
+
+    background-size: 100% 100%,
+    100% 100%,
+    7px 7px,
+    7px 7px;
+
+    background-position: 0 0,
+    0 0,
+    calc(100% - 18px) 50%,
+    calc(100% - 12px) 50%;
+}
+
+.select-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.select-wrapper::after {
+    content: "▼";
+    font-size: 20px;
+    color: #000000;
+    position: absolute;
+    right: 8px;
+    top: 52%;
+    transform: translateY(-50%) rotate(0deg);
+    transition: transform 0.25s ease, color 0.25s ease;
+    pointer-events: none;
+}
+
+.select-wrapper.open::after {
+    transform: translateY(-50%) rotate(-90deg);
+    color: #0cc1e0;
 }

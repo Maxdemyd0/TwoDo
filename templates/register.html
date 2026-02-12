@@ -17,12 +17,14 @@
         {% csrf_token %}
         <label for="username">Username: </label>
         {{ form.username }}<br>
+        <label for="email">Email Address: </label>
+        {{ form.email }}<br>
         <label for="password">Password: </label>
         {{ form.password1 }}<br>
         <label for="conf_password">Confirm Password: </label>
         {{ form.password2 }}<br>
         <button type="submit">Register</button>
     </form>
-    <p>Already have an account? <a href="/login/">Login</a></p>
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
 </body>
 </html>

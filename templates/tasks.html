@@ -11,20 +11,41 @@
                 <button class="smallbutton">Create New Task</button>
             </a>
         </p>
-        <form method="get">
-            <label for="filter">Filter:</label>
-            <select name="filter" id="filter" onchange="this.form.submit()">
-                <option value="" {% if not current_filter %}selected{% endif %}>
-                    All
-                </option>
-                <option value="active" {% if current_filter == "active" %}selected{% endif %}>
-                    Active
-                </option>
-                <option value="completed" {% if current_filter == "completed" %}selected{% endif %}>
-                    Completed
-                </option>
-            </select>
-        </form>
+
+            <form method="get">
+                <label for="filter">Filter:</label>
+                <div class="select-wrapper">
+                    <select name="filter" id="filter" onchange="this.form.submit()">
+                        <option value="" {% if not current_filter %}selected{% endif %}>
+                            All
+                        </option>
+                        <option value="active" {% if current_filter == "active" %}selected{% endif %}>
+                            Active
+                        </option>
+                        <option value="completed" {% if current_filter == "completed" %}selected{% endif %}>
+                            Completed
+                        </option>
+                    </select>
+                </div>
+            </form>
+            <form method="get">
+                <label for="list">Filter by List:</label>
+                <div class="select-wrapper">
+                    <select name="list" id="list" onchange="this.form.submit()">
+                        <option value="">All Lists</option>
+
+                        {% for list in lists %}
+                            <option value="{{ list.id }}"
+                                {% if list.id|stringformat:"s" == selected_list_id %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ list.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form><br
         <tr>
             <th>Name</th>
             <th>Description</th>

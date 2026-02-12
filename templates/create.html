@@ -1,19 +1,22 @@
 {% extends "base_view.html" %}
 
-{% block title %}Create Task{% endblock %}
-
 {% block content %}
-<form method="post">
-    {% csrf_token %}
+    <h1>Create Task</h1>
 
-    <label for="name">Task Name</label><br>
-    <input type="text" name="name" id="name" required><br><br>
+    <form method="post">
+        {% csrf_token %}
+        <label>Name</label>
+        {{ form.name }}
 
-    <label for="description">Description</label><br>
-    <input type="text" name="description" id="description"><br><br>
+        <label>Description</label>
+        {{ form.description }}
 
-    <button type="submit">Create Task</button>
-</form>
+        <label>Completed</label>
+        {{ form.status }}
 
-<p><a href="{% url 'tasks' %}">Back to tasks</a></p>
+        <label>List</label>
+        {{ form.task_list }}
+
+        <button type="submit">Create</button>
+    </form>
 {% endblock %}
