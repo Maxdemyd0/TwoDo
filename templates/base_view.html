@@ -26,7 +26,15 @@ select.addEventListener("blur", () => {
     {% endfor %}
 {% endif %}
 
-{% block content %}{% endblock %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message-box">
+                <p class="error">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
 
 <script src="{% static 'scripts/main.js' %}"></script>
 

@@ -1,10 +1,11 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.http import HttpRequest
 from django.shortcuts import redirect, render, get_object_or_404
-from main.forms import RegisterForm, TaskForm
+from main.forms import RegisterForm, TaskForm, EditProfileForm
 from main.models import Task, TaskList
 
 
@@ -174,4 +175,41 @@ def list_detail(request, list_id):
     return render(request, "list_view.html", {
         "task_list": task_list,
         "tasks": tasks,
+    })
+
+@login_required
+def edit_profile(request):
+    if request.method == "POST":
+        form = EditProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("profile", username=request.user.username)
+    else:
+        form = EditProfileForm(instance=request.user)
+
+    return render(request, "edit_profile.html", {
+        "form": form
+    })
+
+@login_required
+def change_password(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+
+            # Log the user out after password change
+            logout(request)
+
+            messages.success(
+                request,
+                "Your password was changed successfully. Please log in again."
+            )
+
+            return redirect("login")  # Make sure you have a login URL name
+    else:
+        form = PasswordChangeForm(request.user)
+
+    return render(request, "change_password.html", {
+        "form": form
     })

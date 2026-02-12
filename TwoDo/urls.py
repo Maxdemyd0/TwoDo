@@ -60,6 +60,8 @@ urlpatterns = [
     ),
     path('profile/', views.profile, name='profile'),
     path('profile/<int:user_id>/', views.profile_detail, name='profile_detail'),
+    path("profile/edit/", views.edit_profile, name="edit_profile"),
+    path("profile/edit/change-password/", views.change_password, name="change_password"),
     path('lists/', views.lists, name='lists'),
     path('lists/create/', views.create_list, name='create_list'),
     path('lists/<int:list_id>/', views.list_detail, name='list_detail'),

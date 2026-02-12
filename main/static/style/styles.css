@@ -44,7 +44,8 @@ button {
     margin-bottom: 5px;
 }
 
-input[type="text"], input[type="password"], input[type="email"], input[type="e"] {
+input[type="text"], input[type="password"], input[type="email"] {
+    font: 16px "Segoe UI", segoe;
     background:
 
         linear-gradient(#eaeaea, #eaeaea) padding-box,
@@ -190,10 +191,25 @@ form {
 
 .profile-box {
     border: 2px solid #ccc;
+    background: #e6e6e6;
     padding: 15px;
     width: 400px;
     border-radius: 5px;
     margin-bottom: 20px;
+}
+
+.profile-box p {
+    font: 20px "Segoe UI", segoe;
+    font-weight: normal;
+    color: #000000;
+    margin-top: 0;
+}
+
+.profile-box p strong {
+    font: 20px "Segoe UI", segoe;
+    font-weight: bold;
+    color: #000000;
+    margin-top: 0;
 }
 
 select {
@@ -281,6 +297,25 @@ textarea {
     border-radius: 3px;
     border: 3px solid transparent;
 
+    margin-top: 5px;
     padding: 6px;
     resize: vertical;   /* allows vertical resizing only */
+    min-height: 42px;
+}
+
+.message-box {
+    background-color: #e0f7fa;
+    border: 1px solid #0cc1e0;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.profile-box a {
+    color: #0c8fe0;
+    text-decoration: underline;
+}
+
+.profile-box a:hover {
+    text-decoration: underline;
 }

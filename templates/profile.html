@@ -15,7 +15,9 @@
     <p><strong>Username:</strong> {{ user_obj.username }}</p>
     <p><strong>Email:</strong>
         {% if is_self %}
-            {{ user_obj.email }}
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ user_obj.email }}" target="_blank">
+                {{ user_obj.email }}
+            </a>
         {% else %}
             Private
         {% endif %}
@@ -40,7 +42,7 @@
 
 {% if is_self %}
     <br>
-    <a href="#">
+    <a href="{% url 'edit_profile' %}">
         <button>Edit Profile</button>
     </a>
 {% endif %}

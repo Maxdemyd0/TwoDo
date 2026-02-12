@@ -1,0 +1,38 @@
+{% extends "base_view.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<h1>Edit Your Profile</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div>
+        <label>Username</label><br>
+        {{ form.username }}
+    </div>
+
+    <br>
+
+    <div>
+        <label>Email</label><br>
+        {{ form.email }}
+    </div>
+
+    <br>
+    <a href="{% url 'change_password' %}">
+        <button>Change Password</button>
+    </a>
+    <br>
+
+    <button type="submit">Save Changes</button>
+</form>
+
+<br>
+
+<a href="{% url 'profile' request.user.username %}">
+    <button>Cancel</button>
+</a>
+
+{% endblock %}
