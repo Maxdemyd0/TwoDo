@@ -3,12 +3,23 @@
 {% block title %}{{ task_list.name }}{% endblock %}
 
 {% block content %}
+
+{% if is_admin_mode %}
+    <span style="color:red;">(Admin View)</span>
+{% endif %}
+
 <h1>{{ task_list.name }}</h1>
 
 <p>
     <a href="{% url 'create' %}?list={{ task_list.id }}">
         <button class="smallbutton">Create Task in This List</button>
     </a>
+    {% if list.owner == request.user %}
+        <br>
+        <a href="{% url 'share_list' list.id %}">
+            <button class="smallbutton">Share List</button>
+        </a>
+    {% endif %}
 </p>
 
 <table>
@@ -57,7 +68,7 @@
 <p>
     <a href="{% url 'lists' %}">
         <button class="smallbutton">Back to Lists</button>
-    </a>
+    </a><br>
 
     <a href="{% url 'tasks' %}">
         <button class="smallbutton">All Tasks</button>

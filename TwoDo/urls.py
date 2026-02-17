@@ -21,7 +21,7 @@ from main import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    #path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('tasks/', views.tasks, name='tasks'),
     path('tasks/create/', views.create_task, name='create'),
@@ -34,34 +34,34 @@ urlpatterns = [
     path(
 "password-reset/",
         auth_views.PasswordResetView.as_view(
-            template_name="password_reset.html"
+            template_name="user/password_reset.html"
         ),
         name="password_reset",
     ),
     path(
         "password-reset/done/",
         auth_views.PasswordResetDoneView.as_view(
-            template_name="password_reset_done.html"
+            template_name="user/password_reset_done.html"
         ),
         name="password_reset_done",
     ),
     path(
         "reset/<uidb64>/<token>/",
         auth_views.PasswordResetConfirmView.as_view(
-            template_name="password_reset_confirm.html"
+            template_name="user/password_reset_confirm.html"
         ),
         name="password_reset_confirm",
     ),
     path(
         "reset/done/",
         auth_views.PasswordResetCompleteView.as_view(
-            template_name="password_reset_complete.html"
+            template_name="user/password_reset_complete.html"
         ),
         name="password_reset_complete",
     ),
-    path('profile/<str:username>/', views.profile, name='profile'),
     path("profile/", lambda request: redirect('profile', username=request.user.username), name="my_profile"),
     path("profile/edit/", views.edit_profile, name="edit_profile"),
+    path('profile/<str:username>/', views.profile, name='profile'),
     path("profile/edit/change-password/", views.change_password, name="change_password"),
     path('lists/', views.lists, name='lists'),
     path('lists/create/', views.create_list, name='create_list'),
@@ -69,4 +69,15 @@ urlpatterns = [
     path("friends/", views.friends_page, name="friends_page"),
     path("friends/send/<int:user_id>/", views.send_friend_request, name="send_friend_request"),
     path("friends/accept/<int:request_id>/", views.accept_friend_request, name="accept_friend_request"),
+    path("lists/<int:list_id>/share/", views.share_list, name="share_list"),
+    path("friends/remove/<int:user_id>/", views.remove_friend, name="remove_friend"),
+    path("friends/cancel/<int:request_id>/",views.cancel_friend_request,name="cancel_friend_request"),
+    path("admin-panel/", views.admin_panel, name="admin_panel"),
+    path("admin-panel/toggle-mode/", views.toggle_admin_mode, name="toggle_admin_mode"),
+    path(
+        "admin-panel/delete-user/<int:user_id>/",
+        views.delete_user,
+        name="delete_user",
+    ),
+    path('admin-panel/make-admin/<int:user_id>/', views.make_admin, name="make_admin"),
 ]

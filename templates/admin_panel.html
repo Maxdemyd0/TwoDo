@@ -1,0 +1,94 @@
+{% extends "base_view.html" %}
+{% block content %}
+
+<h2>Admin Control Panel</h2>
+
+<div class="tabs">
+    <a href="?tab=users"
+       class="{% if tab == 'users' %}active-tab{% endif %}">
+        Users
+    </a>
+
+    <a href="?tab=admins"
+       class="{% if tab == 'admins' %}active-tab{% endif %}">
+        Add Admin
+    </a>
+</div>
+
+{% if tab == "users" %}
+
+    <h3>User Stats</h3>
+    <p>Total Users: {{ total_users }}</p>
+    <p>Total Admins: {{ total_admins }}</p>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+
+                    <td>
+                        {% if user.is_superuser %}
+                            Superuser
+                        {% elif user.is_staff %}
+                            Admin
+                        {% else %}
+                            User
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if user != request.user %}
+                            <form method="post"
+                                  action="{% url 'delete_user' user.id %}"
+                                  style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="smallbutton"
+                                        onclick="return confirm('Delete {{ user.username }}?');"
+                                        class="delete-btn">
+                                    Delete
+                                </button>
+                            </form>
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% elif tab == "admins" %}
+
+    <h3>Promote User to Admin</h3>
+
+    <ul>
+        {% for user in users %}
+            {% if not user.is_staff %}
+                <li style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <div class="promotion-box">
+                        <span>{{ user.username }}</span>
+
+                        <form method="post" action="{% url 'make_admin' user.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="smallbutton">
+                                Make Admin
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+{% endif %}
+
+{% endblock %}

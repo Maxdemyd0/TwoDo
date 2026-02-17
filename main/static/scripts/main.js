@@ -16,5 +16,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     setupToggle("filter");
-    setupToggle("list");
 });

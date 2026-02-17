@@ -1,0 +1,38 @@
+{% extends "base_view.html" %}
+
+{% block content %}
+<h1>Your Task Lists</h1>
+
+<a href="{% url 'create_list' %}">
+    <button>Create New List</button>
+</a>
+
+<h2>🏠Owned Lists</h2>
+<ul>
+    {% for list in owned_lists %}
+        <li>
+            <a href="{% url 'list_detail' list.id %}" class="listlink">
+                {{ list.name }}
+            </a>
+        </li>
+    {% empty %}
+        <li>No owned lists yet.</li>
+    {% endfor %}
+</ul>
+
+{% if shared_lists %}
+    <hr>
+    <h2>🤝Shared With You</h2>
+    <ul>
+        {% for list in shared_lists %}
+            <li>
+                <a href="{% url 'list_detail' list.id %}" class="listlink">
+                    {{ list.name }}
+                </a>
+                <small>(by {{ list.owner.username }})</small>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% endblock %}

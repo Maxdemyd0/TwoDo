@@ -19,6 +19,12 @@ select.addEventListener("blur", () => {
     wrapper.classList.remove("open");
 });
 </script>
+{% if request.session.admin_mode %}
+    <div class="admin-banner">
+        ⚠ ADMIN MODE ACTIVE ⚠
+    </div>
+{% endif %}
+
 <body>
 {% if messages %}
     {% for message in messages %}
@@ -33,9 +39,22 @@ select.addEventListener("blur", () => {
         <a href="{% url 'tasks' %}">Tasks</a>
         <a href="{% url 'lists' %}">Lists</a>
         <a href="{% url 'friends_page' %}">Friends</a>
+        {% if user.is_staff %}
+            <a href="{% url 'admin_panel' %}">Admin Panel</a>
+        {% endif %}
     </div>
 
     <div class="nav-right">
+        {% if user.is_staff %}
+            <a href="{% url 'toggle_admin_mode' %}"
+               class="admin-toggle {% if request.session.admin_mode %}active{% endif %}">
+                {% if request.session.admin_mode %}
+                    Exit Admin
+                {% else %}
+                    Admin Mode
+                {% endif %}
+            </a>
+        {% endif %}
         <a href="{% url 'profile' request.user.username %}" class="profile-icon">
             <img src="{% static 'images/usericon.ico' %}" alt="Profile">
         </a>
@@ -45,15 +64,14 @@ select.addEventListener("blur", () => {
 <hr>
 {% endif %}
 
-{% block content %}
-    {% if messages %}
+{% if messages %}
         {% for message in messages %}
             <div class="message-box">
                 <p class="error">{{ message }}</p>
             </div>
         {% endfor %}
     {% endif %}
-{% endblock %}
+{% block content %}{% endblock %}
 
 <script src="{% static 'scripts/main.js' %}"></script>
 

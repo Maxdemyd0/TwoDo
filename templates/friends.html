@@ -8,55 +8,125 @@
 
 <div class="tabs">
     <a href="?tab=friends"
-       class="{% if tab == 'friends' %}active-tab{% endif %}">
+        class="{% if tab == 'friends' %}active-tab{% endif %}">
         Friends
     </a>
 
     <a href="?tab=search"
-       class="{% if tab == 'search' %}active-tab{% endif %}">
+        class="{% if tab == 'search' %}active-tab{% endif %}">
         Search Users
     </a>
 
     <a href="?tab=requests"
-       class="{% if tab == 'requests' %}active-tab{% endif %}">
+        class="{% if tab == 'requests' %}active-tab{% endif %}">
         Requests
+    </a>
+
+    <a href="?tab=sent"
+        class="{% if tab == 'sent' %}active-tab{% endif %}">
+        Sent
     </a>
 </div>
 
-<hr>
+<hr class="friendshr">
 
 {% if tab == "friends" %}
 
+    <h3>Your Friends</h3>
+
     {% for friend in friends %}
         <div class="profile-box">
-            {{ friend.username }}
+            <p>{{ friend.username }}</p>
         </div>
+        <form method="post" action="{% url 'remove_friend' friend.id %}">
+            {% csrf_token %}
+            <button
+                type="submit"
+                onclick="return confirm('Are you sure you want to remove {{ friend.username }}?');">
+                Remove
+            </button>
+        </form>
     {% empty %}
         <p>No friends yet.</p>
     {% endfor %}
 
 {% elif tab == "search" %}
 
-    <form method="get">
+    <h3>Search Users</h3>
+
+    <form method="GET" action="" style="margin-bottom: 15px;">
         <input type="hidden" name="tab" value="search">
-        <input type="text" name="q" placeholder="Search username...">
-        <button type="submit" class="smallbutton">Search</button>
+
+        <input type="text"
+               name="q"
+               placeholder="Search by username..."
+               value="{{ request.GET.q }}"
+               style="padding: 6px; border-radius: 6px; border: 1px solid #ccc;">
+
+        <button type="submit" style="padding: 6px 10px;">
+            Search
+        </button>
     </form>
 
-    <br>
+    <ul style="list-style: none; padding: 0;">
+        {% for user, status, request_id in users_with_status %}
+            <li style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 16px;
+                margin-bottom: 10px;
+                border: 1px solid #e0e0e0;
+                border-radius: 10px;
+                background-color: #f9f9f9;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            ">
 
-    {% for user in users %}
-        <div class="profile-box">
-            {{ user.username }}
+                <span style="font-weight: 500;">
+                    {{ user.username }}
+                </span>
 
-            <form action="{% url 'send_friend_request' user.id %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Add Friend</button>
-            </form>
-        </div>
-    {% empty %}
-        <p>No users found.</p>
-    {% endfor %}
+                <div>
+                    {% if status == "friends" %}
+                        <form method="post" action="{% url 'remove_friend' user.id %}">
+                            {% csrf_token %}
+                            <button style="margin-top: 20px" type="submit"
+                                    onclick="return confirm('Remove {{ user.username }} as a friend?');">
+                                Remove
+                            </button>
+                        </form>
+
+                    {% elif status == "sent" %}
+                        <button style="margin-top: 20px" type="button"
+                                onclick="window.location.href='{% url 'friends_page' %}?tab=sent'">
+                            Pending
+                        </button>
+
+                    {% elif status == "received" %}
+                        <form method="post" action="{% url 'accept_friend_request' request_id %}">
+                            {% csrf_token %}
+                            <button style="margin-top: 20px" type="submit">
+                                Accept Request
+                            </button>
+                        </form>
+
+                    {% else %}
+                        <form method="post" action="{% url 'send_friend_request' user.id %}">
+                            {% csrf_token %}
+                            <button style="margin-top: 20px" type="submit">
+                                Add Friend
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+
+            </li>
+        {% empty %}
+            {% if request.GET.q %}
+                <li>No users found</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
 
 {% elif tab == "requests" %}
 
@@ -73,6 +143,25 @@
         <p>No friend requests.</p>
     {% endfor %}
 
+{% elif tab == "sent" %}
+    <ul>
+        {% for request in sent_requests %}
+            <li class="user-card" style="display: flex; justify-content: space-between; align-items: center;">
+                <span>{{ request.receiver.username }}</span>
+
+                <form method="post" action="{% url 'cancel_friend_request' request.id %}">
+                    {% csrf_token %}
+                    <button
+                        type="submit"
+                        onclick="return confirm('Cancel friend request to {{ request.receiver.username }}?');">
+                        Cancel
+                    </button>
+                </form>
+            </li>
+        {% empty %}
+            <p>No pending sent requests</p>
+        {% endfor %}
+    </ul>
 {% endif %}
 
 {% endblock %}

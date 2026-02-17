@@ -1,1 +1,1 @@
-This is a development server build of TwoDo.
+This is a development server build of TwoDo. Use the run.ps1 file to run the project or the migrate.ps1 file to migrate(for DB models).

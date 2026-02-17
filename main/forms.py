@@ -1,6 +1,8 @@
 from django import forms as django_forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.db.models import Q
+
 from main.models import Task, TaskList
 
 
@@ -17,11 +19,15 @@ class TaskForm(django_forms.ModelForm):
         fields = ["name", "description", "status", "task_list"]
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop("user", None)
+        user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
 
-        if user:
-            self.fields["task_list"].queryset = TaskList.objects.filter(user=user)
+        if user.is_staff:
+            self.fields["task_list"].queryset = TaskList.objects.all()
+        else:
+            self.fields["task_list"].queryset = TaskList.objects.filter(
+                Q(owner=user) | Q(shared_with=user)
+            )
 
 class EditProfileForm(django_forms.ModelForm):
     class Meta:

@@ -30,26 +30,6 @@
                         </option>
                     </select>
                 </div>
-            </form>
-            <form method="get">
-                <label for="list">Filter by List:</label>
-                <div class="select-wrapper">
-                    <select name="list" id="list" onchange="this.form.submit()">
-                        <option value="" {% if not current_list and not selected_list_id %}selected{% endif %}>
-                            All Lists
-                        </option>
-                        {% for list in lists %}
-                            <option value="{{ list.id }}"
-                                {% if current_list and list.id == current_list.id %}
-                                    selected
-                                {% elif list.id|stringformat:"s" == selected_list_id %}
-                                    selected
-                                {% endif %}>
-                                {{ list.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
             </form><br>
         </div>
         <tr>

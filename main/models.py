@@ -5,12 +5,18 @@ from django.db.models import Q
 
 class TaskList(models.Model):
     name = models.CharField(max_length=100)
-    user = models.ForeignKey(
+
+    owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="lists"
+        related_name="owned_lists"
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+
+    shared_with = models.ManyToManyField(
+        User,
+        related_name="shared_lists",
+        blank=True
+    )
 
     def __str__(self):
         return self.name
