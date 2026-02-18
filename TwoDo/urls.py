@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path
+
+import ai.views as ai_views
 from main import views
 from django.contrib.auth import views as auth_views
 
@@ -80,4 +82,6 @@ urlpatterns = [
         name="delete_user",
     ),
     path('admin-panel/make-admin/<int:user_id>/', views.make_admin, name="make_admin"),
+    path('ai-assistant/', ai_views.assistant_page, name='ai_assistant_page'),
+    path('ai-assistant/api/', ai_views.assistant_api, name="ai_assistant_api"),
 ]

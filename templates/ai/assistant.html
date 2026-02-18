@@ -1,0 +1,33 @@
+{% extends "base_view.html" %}
+{% block content %}
+
+<div class="ai-container">
+    <h2>TwoDo AI Assistant</h2>
+
+    <div class="ai-chat-box">
+
+        {% if user_message %}
+            <div class="ai-message user">
+                <strong>You</strong>
+                {{ user_message }}
+            </div>
+        {% endif %}
+
+        {% if ai_response %}
+            <div class="ai-message bot">
+                <strong>AI Assistant</strong>
+                {{ ai_response }}
+            </div>
+        {% endif %}
+
+    </div>
+
+    <form method="post" class="ai-form">
+        {% csrf_token %}
+        <textarea name="message" placeholder="Ask me about your tasks..."></textarea><br>
+        <button type="submit" class="smallbutton">Send</button>
+    </form>
+
+</div>
+
+{% endblock %}

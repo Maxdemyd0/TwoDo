@@ -526,3 +526,62 @@ li {
 .promotion-box .smallbutton {
     margin: 8px 8px 0;
 }
+
+/* ========================= */
+/* AI Assistant Styling      */
+/* ========================= */
+
+.ai-container {
+    max-width: 800px;
+    margin: 30px auto;
+}
+
+.ai-container h2 {
+    margin-bottom: 15px;
+}
+
+.ai-chat-box {
+    border: 3px solid transparent;
+    border-radius: 6px;
+    padding: 15px;
+    background:
+        linear-gradient(#f5f5f5, #f5f5f5) padding-box,
+        linear-gradient(to right, #0cc1e0, #ff7474) border-box;
+}
+
+.ai-message {
+    margin-bottom: 15px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font: 16px "Segoe UI", segoe;
+}
+
+.ai-message.user {
+    background-color: #eaeaea;
+    border-left: 6px solid #0cc1e0;
+}
+
+.ai-message.bot {
+    background-color: #fdf0f0;
+    border-left: 6px solid #ff7474;
+}
+
+.ai-message strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.ai-form {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.ai-form textarea {
+    flex: 1;
+    min-height: 60px;
+}
+
+.ai-form button {
+    align-self: flex-end;
+}
